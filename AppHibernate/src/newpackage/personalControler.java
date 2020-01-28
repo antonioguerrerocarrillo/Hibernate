@@ -6,6 +6,7 @@
 package newpackage;
 
 import apphibernate.Clientes;
+import apphibernate.Personal;
 import java.util.ArrayList;
 import java.util.List;
 import org.hibernate.Query;
@@ -20,9 +21,9 @@ import org.hibernate.service.ServiceRegistry;
  *
  * @author cuvil
  */
-public class clienteControler {
+public class personalControler {
     
-   public  void insertarCliente(Clientes c) {
+   public  void insertarPersonal(Personal c) {
         
       Configuration cfg = new Configuration();
         cfg.configure("hibernate.cfg.xml");
@@ -38,7 +39,7 @@ public class clienteControler {
         session.close();
         
     }
-    public static void leerClientes(ArrayList<Clientes>arrayClientes){
+    public static void leerPersonal(ArrayList<Personal>arrayPersonal){
     
         Configuration cfg = new Configuration();
         cfg.configure("hibernate.cfg.xml");
@@ -47,19 +48,19 @@ public class clienteControler {
         Session session = null;
         session = factory.openSession();
         //FROM POJO 
-        Query query = session.createQuery("FROM Clientes");
-        List<Clientes> listDatos = query.list();
+        Query query = session.createQuery("FROM Personal");
+        List<Personal> listDatos = query.list();
         
-        listDatos.forEach((Clientes datos) -> {   
-            Clientes d = new Clientes();
+        listDatos.forEach((Personal datos) -> {   
+            Personal d = new Personal();
             d = datos;
-            arrayClientes.add(d);
+            arrayPersonal.add(d);
          });
         session.close();
     
     
     }
-    public static void eliminarCliente(Clientes r){
+    public static void eliminarPersonal(Personal r){
         
        Configuration cfg = new Configuration();
         cfg.configure("hibernate.cfg.xml");
@@ -67,13 +68,13 @@ public class clienteControler {
         SessionFactory factory = cfg.buildSessionFactory(serviceRegistry);
         Session session = null;
         session = factory.openSession();
-        List<Clientes> p = session.createQuery("FROM Clientes WHERE id='"+r.getId()+"'").list();
-        Clientes aux = p.get(0);
+        List<Personal> p = session.createQuery("FROM Personal WHERE id='"+r.getId()+"'").list();
+        Personal aux = p.get(0);
         aux.setId(r.getId());
         aux.setNombre(r.getNombre());
         aux.setApellidos(r.getApellidos());
         aux.setTelefono(r.getTelefono());
-        aux.setDni(r.getDni());
+        aux.setSeccion(r.getSeccion());
  
         session.beginTransaction();
         session.delete(aux);
@@ -83,7 +84,7 @@ public class clienteControler {
         session.close();
     }
     
-    public static void modificarCliente(Clientes r){
+    public static void modificarPersonal(Personal r){
         Configuration cfg = new Configuration();
             cfg.configure("hibernate.cfg.xml");
             ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder().applySettings(cfg.getProperties()).build();
@@ -92,14 +93,14 @@ public class clienteControler {
             session = factory.openSession();
             Transaction t = session.beginTransaction();
 
-             List<Clientes> p = session.createQuery("FROM Clientes WHERE id='"+r.getId()+"'").list();
+             List<Personal> p = session.createQuery("FROM Personal WHERE id='"+r.getId()+"'").list();
              
-            Clientes aux = p.get(0);
+            Personal aux = p.get(0);
             aux.setId(r.getId());
             aux.setNombre(r.getNombre());
             aux.setApellidos(r.getApellidos());
             aux.setTelefono(r.getTelefono());
-            aux.setDni(r.getDni());
+            aux.setSeccion(r.getSeccion());
                    
             session.update(aux);
             t.commit();

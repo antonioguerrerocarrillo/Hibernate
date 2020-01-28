@@ -6,6 +6,7 @@
 package newpackage;
 
 import apphibernate.Clientes;
+import apphibernate.Concesionario;
 import java.util.ArrayList;
 import java.util.List;
 import org.hibernate.Query;
@@ -20,9 +21,9 @@ import org.hibernate.service.ServiceRegistry;
  *
  * @author cuvil
  */
-public class clienteControler {
+public class concesionarioControler {
     
-   public  void insertarCliente(Clientes c) {
+ public  void concesionarioControler(Concesionario c) {
         
       Configuration cfg = new Configuration();
         cfg.configure("hibernate.cfg.xml");
@@ -38,7 +39,7 @@ public class clienteControler {
         session.close();
         
     }
-    public static void leerClientes(ArrayList<Clientes>arrayClientes){
+    public static void leerConcesionario(ArrayList<Concesionario>arrayConcesionario){
     
         Configuration cfg = new Configuration();
         cfg.configure("hibernate.cfg.xml");
@@ -47,19 +48,19 @@ public class clienteControler {
         Session session = null;
         session = factory.openSession();
         //FROM POJO 
-        Query query = session.createQuery("FROM Clientes");
-        List<Clientes> listDatos = query.list();
+        Query query = session.createQuery("FROM Concesionario");
+        List<Concesionario> listDatos = query.list();
         
-        listDatos.forEach((Clientes datos) -> {   
-            Clientes d = new Clientes();
+        listDatos.forEach((Concesionario datos) -> {   
+            Concesionario d = new Concesionario();
             d = datos;
-            arrayClientes.add(d);
+            arrayConcesionario.add(d);
          });
         session.close();
     
     
     }
-    public static void eliminarCliente(Clientes r){
+    public static void eliminarConcesionario(Concesionario r){
         
        Configuration cfg = new Configuration();
         cfg.configure("hibernate.cfg.xml");
@@ -67,13 +68,13 @@ public class clienteControler {
         SessionFactory factory = cfg.buildSessionFactory(serviceRegistry);
         Session session = null;
         session = factory.openSession();
-        List<Clientes> p = session.createQuery("FROM Clientes WHERE id='"+r.getId()+"'").list();
-        Clientes aux = p.get(0);
+        List<Concesionario> p = session.createQuery("FROM Concesionario WHERE id='"+r.getId()+"'").list();
+        Concesionario aux = p.get(0);
         aux.setId(r.getId());
         aux.setNombre(r.getNombre());
-        aux.setApellidos(r.getApellidos());
+        aux.setDireccion(r.getDireccion());
         aux.setTelefono(r.getTelefono());
-        aux.setDni(r.getDni());
+        aux.setLocalidad(r.getLocalidad());
  
         session.beginTransaction();
         session.delete(aux);
@@ -83,7 +84,7 @@ public class clienteControler {
         session.close();
     }
     
-    public static void modificarCliente(Clientes r){
+    public static void modificarConcesionario(Concesionario r){
         Configuration cfg = new Configuration();
             cfg.configure("hibernate.cfg.xml");
             ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder().applySettings(cfg.getProperties()).build();
@@ -92,14 +93,14 @@ public class clienteControler {
             session = factory.openSession();
             Transaction t = session.beginTransaction();
 
-             List<Clientes> p = session.createQuery("FROM Clientes WHERE id='"+r.getId()+"'").list();
+             List<Concesionario> p = session.createQuery("FROM Concesionario WHERE id='"+r.getId()+"'").list();
              
-            Clientes aux = p.get(0);
+            Concesionario aux = p.get(0);
             aux.setId(r.getId());
             aux.setNombre(r.getNombre());
-            aux.setApellidos(r.getApellidos());
+            aux.setDireccion(r.getDireccion());
             aux.setTelefono(r.getTelefono());
-            aux.setDni(r.getDni());
+            aux.setLocalidad(r.getLocalidad());
                    
             session.update(aux);
             t.commit();

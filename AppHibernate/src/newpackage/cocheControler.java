@@ -39,7 +39,7 @@ public class cocheControler {
         session.close();
         
     }
-    public static void leerClientes(ArrayList<Clientes>arrayClientes){
+    public static void leerCoches(ArrayList<Coches>arrayCoches){
     
         Configuration cfg = new Configuration();
         cfg.configure("hibernate.cfg.xml");
@@ -48,19 +48,19 @@ public class cocheControler {
         Session session = null;
         session = factory.openSession();
         //FROM POJO 
-        Query query = session.createQuery("FROM Clientes");
-        List<Clientes> listDatos = query.list();
+        Query query = session.createQuery("FROM Coches");
+        List<Coches> listDatos = query.list();
         
-        listDatos.forEach((Clientes datos) -> {   
-            Clientes d = new Clientes();
+        listDatos.forEach((Coches datos) -> {   
+            Coches d = new Coches();
             d = datos;
-            arrayClientes.add(d);
+            arrayCoches.add(d);
          });
         session.close();
     
     
     }
-    public static void eliminarCliente(Clientes r){
+    public static void eliminarCoches(Coches r){
         
        Configuration cfg = new Configuration();
         cfg.configure("hibernate.cfg.xml");
@@ -68,13 +68,13 @@ public class cocheControler {
         SessionFactory factory = cfg.buildSessionFactory(serviceRegistry);
         Session session = null;
         session = factory.openSession();
-        List<Clientes> p = session.createQuery("FROM Clientes WHERE id='"+r.getId()+"'").list();
-        Clientes aux = p.get(0);
+        List<Coches> p = session.createQuery("FROM Coches WHERE id='"+r.getId()+"'").list();
+        Coches aux = p.get(0);
         aux.setId(r.getId());
-        aux.setNombre(r.getNombre());
-        aux.setApellidos(r.getApellidos());
-        aux.setTelefono(r.getTelefono());
-        aux.setDni(r.getDni());
+        aux.setMarca(r.getMarca());
+        aux.setModelo(r.getModelo());
+        aux.setNumeroBastidor(r.getNumeroBastidor());
+        aux.setAno(r.getAno());
  
         session.beginTransaction();
         session.delete(aux);
@@ -84,7 +84,7 @@ public class cocheControler {
         session.close();
     }
     
-    public static void modificarEntrenador(Clientes r){
+    public static void modificarCoche(Coches r){
         Configuration cfg = new Configuration();
             cfg.configure("hibernate.cfg.xml");
             ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder().applySettings(cfg.getProperties()).build();
@@ -93,14 +93,14 @@ public class cocheControler {
             session = factory.openSession();
             Transaction t = session.beginTransaction();
 
-             List<Clientes> p = session.createQuery("FROM Clientes WHERE id='"+r.getId()+"'").list();
+             List<Coches> p = session.createQuery("FROM Coches WHERE id='"+r.getId()+"'").list();
              
-            Clientes aux = p.get(0);
+            Coches aux = p.get(0);
             aux.setId(r.getId());
-            aux.setNombre(r.getNombre());
-            aux.setApellidos(r.getApellidos());
-            aux.setTelefono(r.getTelefono());
-            aux.setDni(r.getDni());
+            aux.setMarca(r.getMarca());
+            aux.setModelo(r.getModelo());
+            aux.setNumeroBastidor(r.getNumeroBastidor());
+            aux.setAno(r.getAno());
                    
             session.update(aux);
             t.commit();

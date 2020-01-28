@@ -6,6 +6,7 @@
 package apphibernate;
 
 
+import newpackage.clienteControler;
 import controlador.cocheControler;
 import java.io.IOException;
 import java.sql.SQLException;
@@ -23,6 +24,8 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
+import newpackage.concesionarioControler;
+import newpackage.personalControler;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
@@ -53,8 +56,11 @@ public class Interfaz extends javax.swing.JFrame {
         bloquear_concesionario();
         bloquear_personal();
         bloquear_clientes();
-       
         
+        cocheControler cc =new cocheControler();
+        cc.leerCoches(coches); 
+        clienteControler cliente_con = new clienteControler();
+        cliente_con.leerClientes(clientes);
         //System.out.println("explota como una palomita ");
      
         //ConectarSQLITE_clientes.recogerDatos (clientes);
@@ -971,12 +977,17 @@ public class Interfaz extends javax.swing.JFrame {
     private void b_eliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_eliminarActionPerformed
    
         try{ 
+             cocheControler cc = new cocheControler();
             DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
+           
             int res = jTable1.getSelectedRow();
+            cc.eliminarCoches(coches.get(res));
             coches.remove(res);
             modelo = (DefaultTableModel) jTable1.getModel();
-
             modelo.removeRow(res); // borra de la fila y el row para la fila selecionada con el raton
+   
+           
+            
 
         }catch (Exception e){
             // JOptionPane.showMessageDialog(null, "selecion una fila "); //muestra una ventana emergente de error
@@ -1021,6 +1032,8 @@ public class Interfaz extends javax.swing.JFrame {
         coches.get(res).setNumeroBastidor(Integer.parseInt(text_ident.getText()));
         coches.get(res).setAno(Integer.parseInt(text_ano.getText()));
         ActualizoTablaCoche();
+        cocheControler cc = new cocheControler();
+        cc.modificarCoche(coches.get(res));
         bloquear();
          b_insertar.setEnabled(true);
         b_eliminar.setEnabled(true);
@@ -1116,6 +1129,8 @@ public class Interfaz extends javax.swing.JFrame {
           try{
             DefaultTableModel modelo = (DefaultTableModel) jTable2.getModel();
             int res = jTable2.getSelectedRow();
+            concesionarioControler cc = new concesionarioControler(); 
+            cc.eliminarConcesionario(concesionarios.get(res));
             concesionarios.remove(res);
             modelo = (DefaultTableModel) jTable2.getModel();
 
@@ -1156,7 +1171,8 @@ public class Interfaz extends javax.swing.JFrame {
         concesionarios.get(res).setDireccion(txt_direccion_c.getText());
         concesionarios.get(res).setLocalidad(txt_id_C.getText());
         concesionarios.get(res).setTelefono(Integer.parseInt(txt_tlf_c.getText()));
-        
+        concesionarioControler cc = new concesionarioControler(); 
+        cc.modificarConcesionario(concesionarios.get(res));
         ActualizartablaConcesionario();
         bloquear_concesionario();
         bt_eliminar_c.setEnabled(true);
@@ -1172,7 +1188,8 @@ public class Interfaz extends javax.swing.JFrame {
         conc.setLocalidad(txt_id_C.getText());
         conc.setTelefono(Integer.parseInt(txt_tlf_c.getText()));
         concesionarios.add(conc);
-  
+        concesionarioControler cc = new concesionarioControler(); 
+        cc.concesionarioControler(conc);
         
        ActualizartablaConcesionario();
        
@@ -1240,6 +1257,8 @@ public class Interfaz extends javax.swing.JFrame {
              try{
             DefaultTableModel modelo = (DefaultTableModel) jTable3.getModel();
             int res = jTable3.getSelectedRow();
+            personalControler cc = new personalControler(); 
+            cc.eliminarPersonal(personales.get(res));
             personales.remove(res);
             modelo = (DefaultTableModel) jTable3.getModel();
 
@@ -1289,6 +1308,8 @@ public class Interfaz extends javax.swing.JFrame {
         personales.get(res).setApellidos(txt_apellido_p.getText());
         personales.get(res).setTelefono(Integer.parseInt(txt_id_p.getText()));
         personales.get(res).setSeccion(txt_departamento_p.getText());
+        personalControler cc = new personalControler(); 
+        cc.modificarPersonal(personales.get(res));
         ActualizarTablaPersonal();
         bloquear_personal();
          bt_eliminar_p.setEnabled(true);
@@ -1308,7 +1329,8 @@ public class Interfaz extends javax.swing.JFrame {
         per.setTelefono(Integer.parseInt(txt_id_p.getText()));
         per.setSeccion(txt_departamento_p.getText());
         personales.add(per);
-
+        personalControler pc = new personalControler();
+        pc.insertarPersonal(per);
         int i = 0;
         for(Personal p : personales){
            jTable3.setValueAt(p.getSeccion(), i, 2);
@@ -1338,22 +1360,21 @@ public class Interfaz extends javax.swing.JFrame {
     }//GEN-LAST:event_bt_introducir_cliActionPerformed
 
     private void bt_eliminar_cliActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_eliminar_cliActionPerformed
-           try{
-            DefaultTableModel modelo = (DefaultTableModel) jTable4.getModel();
-            int res = jTable4.getSelectedRow();
-            clientes.remove(res);
-            modelo = (DefaultTableModel) jTable4.getModel();
+        clienteControler cc = new clienteControler();
+        DefaultTableModel modelo = (DefaultTableModel) jTable4.getModel();
+        int res = jTable4.getSelectedRow();
+        cc.eliminarCliente(clientes.get(res));
+        clientes.remove(res);
+        modelo = (DefaultTableModel) jTable4.getModel();
+ 
+        modelo.removeRow(res); // borra de la fila y el row para la fila selecionada con el raton
 
-            modelo.removeRow(res); // borra de la fila y el row para la fila selecionada con el raton
 
-        }catch (Exception e){
-            // JOptionPane.showMessageDialog(null, "selecion una fila "); //muestra una ventana emergente de error
-        }
        
         limpiar_texto_clientes();
         bloquear_clientes();
     }//GEN-LAST:event_bt_eliminar_cliActionPerformed
-    public void ActualizaTablaClientes() throws SQLException{
+    public void ActualizaTablaClientes(){
      int i = 0;
 
         for(Clientes cn : clientes){
@@ -1393,6 +1414,8 @@ public class Interfaz extends javax.swing.JFrame {
         clientes.get(res).setApellidos(txt_apellido_cl.getText());
         clientes.get(res).setTelefono(Integer.parseInt(txt_tlf_cl.getText()));
         clientes.get(res).setNombre(txt_nombre_cl.getText());
+        clienteControler cc = new clienteControler(); 
+        cc.modificarCliente(clientes.get(res));
         int i = 0;
         for(Clientes cn : clientes){
             jTable4.setValueAt(cn.getDni(), i, 0);
@@ -1417,14 +1440,16 @@ public class Interfaz extends javax.swing.JFrame {
         cli.setDni(txt_dni_cl.getText());
         clientes.add(cli);
         int e;
+        clienteControler cliente_con = new clienteControler();
+        cliente_con.insertarCliente(cli);
+ 
+        ActualizaTablaClientes();
      
-   
-        
          bloquear_clientes();
          limpiar_texto_clientes();
          bt_eliminar_cli.setEnabled(true);
-        bt_actualizar_cli.setEnabled(true);
-       bt_guardar_cli.setEnabled(true);
+         bt_actualizar_cli.setEnabled(true);
+         bt_guardar_cli.setEnabled(true);
          
     }//GEN-LAST:event_bt_anadir_cliActionPerformed
 
